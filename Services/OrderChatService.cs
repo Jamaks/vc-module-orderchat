@@ -61,7 +61,7 @@ namespace Jamak.OrderChatModule.Web.Services
                     return newChatRoom;
                 }
             }
-            throw new NotImplementedException();
+            return null;
         }
 
         public void DeleteMessage(string OrderId, string MessageId)
@@ -101,24 +101,31 @@ namespace Jamak.OrderChatModule.Web.Services
 
                     return chatRoom.ChatMessages.OrderBy(m => m.CreatedDate).ToList();
                 }
-                throw new NotImplementedException();
+                return null;
             }
         }
 
-        public dynamic RoomInfo(string OrderId)
+        public dynamic RoomInfo(string RoomId)
         {
             using (var repository = RepositoryFactory())
             {
-                var chatRoom = repository.ChatRooms.FirstOrDefault(r => r.Id == OrderId);
+                var chatRoom = repository.ChatRooms.FirstOrDefault(r => r.Id == RoomId);
+                dynamic obj = new System.Dynamic.ExpandoObject();
                 if (chatRoom != null)
                 {
-                    dynamic obj= new System.Dynamic.ExpandoObject();
+                    obj.Id = RoomId;
                     obj.LastMessage = chatRoom.ChatMessages.OrderByDescending(p => p.CreatedDate).FirstOrDefault();
                     obj.CountMessages = chatRoom.ChatMessages.Count();
-                    return obj;
                 }
+                else
+                {
+                    var room = CreateRoom(RoomId);
+                    obj.Id = RoomId;
+                    obj.LastMessage = null;
+                    obj.CountMessages = 0;
+                }
+                return obj;
             }
-            throw new NotImplementedException();
         }
 
         public void SubscribeRoom(string OrderId, string UserId)

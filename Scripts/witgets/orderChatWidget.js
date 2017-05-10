@@ -12,5 +12,8 @@ OrderChatModule.controller('Jamak.OrderChatModule.ChatWitget', ['$scope','$http'
 		bladeNavigationService.showBlade(newBlade, $scope.blade);
 	};
     //TODO: http request info
-    
+	$http.post('api/order/chat/room/info/' + $scope.blade['CustomerOrder'].CustomerOrderId)
+        .then(function (resp) {
+            $scope.chatInfo = resp.data;
+        })
 }]);
