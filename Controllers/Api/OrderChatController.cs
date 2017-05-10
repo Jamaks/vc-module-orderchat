@@ -1,4 +1,5 @@
-﻿using Jamak.OrderChatModule.Web.Services;
+﻿using Jamak.OrderChatModule.Web.Model;
+using Jamak.OrderChatModule.Web.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -89,12 +90,12 @@ namespace Jamak.OrderChatModule.Web.Controllers.Api
         /// <returns></returns>
         [HttpPost]
         [Route("room/message/add")]
-        public IHttpActionResult AddMessage(string RoomId, string Text)
+        public IHttpActionResult AddMessage(AddMessageViewModel model)
         {
             var ident = (ClaimsIdentity)User.Identity;
             var UserId = ident.Claims.FirstOrDefault(u => u.Type == ClaimTypes.NameIdentifier);
 
-            return Ok(_orderChatService.AddMessage(RoomId, Text, (UserId == null ? null : UserId.Value), User.Identity.Name));
+            return Ok(_orderChatService.AddMessage(model.RoomId, model.Text, (UserId == null ? null : UserId.Value), User.Identity.Name));
         }
         /// <summary>
         /// Delete message from room

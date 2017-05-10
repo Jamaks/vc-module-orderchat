@@ -12,5 +12,10 @@ namespace Jamak.OrderChatModule.Web.Model
         public string OrderId { get; set; }
         public ICollection<ChatMessage> ChatMessages { get;set;}
         public ICollection<ChatUserSubscriber> ChatUserSubscribers { get; set; }
+        public ChatRoom()
+        {
+            ChatMessages = new List<ChatMessage>();
+            ChatUserSubscribers = new List<ChatUserSubscriber>();
+        }
     }
 }

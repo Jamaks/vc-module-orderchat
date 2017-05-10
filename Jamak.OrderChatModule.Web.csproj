@@ -154,6 +154,7 @@
       <DependentUpon>201705092200503_Init.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
+    <Compile Include="Model\AddMessageViewModel.cs" />
     <Compile Include="Model\ChatMessage.cs" />
     <Compile Include="Model\ChatRoom.cs" />
     <Compile Include="Model\ChatUserSubscriber.cs" />
@@ -168,6 +169,9 @@
     <EmbeddedResource Include="Migrations\201705092200503_Init.resx">
       <DependentUpon>201705092200503_Init.cs</DependentUpon>
     </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Service References\" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

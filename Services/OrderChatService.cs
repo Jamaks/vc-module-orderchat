@@ -93,13 +93,13 @@ namespace Jamak.OrderChatModule.Web.Services
                 if (chatRoom != null)
                 {
                     // remove new messages from subscribe users
-                    var newUserMessages = chatRoom.ChatUserSubscribers.Where(s => s.UserId == UserId);
-                    repository.Remove(newUserMessages);
-                    CommitChanges(repository);
+                    //var newUserMessages = chatRoom.ChatUserSubscribers.Where(s => s.UserId == UserId);
+                    //repository.Remove(newUserMessages);
+                    //CommitChanges(repository);
 
                     //TODO: return dynamic { isNew:true, message:{...}}
 
-                    return chatRoom.ChatMessages.OrderBy(m => m.CreatedDate).ToList();
+                    return repository.ChatMessages.Where(o=>o.ChatRoom.Id== OrderId).OrderBy(m => m.CreatedDate).ToList();
                 }
                 return null;
             }
@@ -114,8 +114,8 @@ namespace Jamak.OrderChatModule.Web.Services
                 if (chatRoom != null)
                 {
                     obj.Id = RoomId;
-                    obj.LastMessage = chatRoom.ChatMessages.OrderByDescending(p => p.CreatedDate).FirstOrDefault();
-                    obj.CountMessages = chatRoom.ChatMessages.Count();
+                    obj.LastMessage = repository.ChatMessages.Where(p=>p.ChatRoom.Id==RoomId).OrderByDescending(p => p.CreatedDate).FirstOrDefault();
+                    obj.CountMessages = repository.ChatMessages.Where(p => p.ChatRoom.Id == RoomId).Count();
                 }
                 else
                 {

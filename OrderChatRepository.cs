@@ -21,7 +21,7 @@ namespace Jamak.OrderChatModule.Web
         public OrderChatRepository(string nameOrConnectionString, params IInterceptor[] interceptors)
              : base(nameOrConnectionString, null, interceptors)
         {
-            Configuration.LazyLoadingEnabled = false;
+            Configuration.LazyLoadingEnabled = true;
         }
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
@@ -60,6 +60,10 @@ namespace Jamak.OrderChatModule.Web
         public IQueryable<ChatUserSubscriber> ChatUserSubscribers
         {
             get { return GetAsQueryable<ChatUserSubscriber>(); }
+        }
+        public IQueryable<ChatUserSubscriberNewMessage> ChatUserSubscriberNewMessages
+        {
+            get { return GetAsQueryable<ChatUserSubscriberNewMessage>(); }
         }
     }
 }
