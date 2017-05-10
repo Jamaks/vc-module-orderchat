@@ -22,8 +22,8 @@
   <copyright>Copyright © 2011-2016 Virto Commerce. All rights reserved</copyright>
   <tags>orders</tags>
 
-  <!--<assemblyFile>OrderChat.Web.dll</assemblyFile>
-  <moduleType>OrderChat.Web.Module, OrderChat.Web</moduleType>
+  <assemblyFile>Jamak.OrderChatModule.Web.dll</assemblyFile>
+  <moduleType>Jamak.OrderChatModule.Web.Module, Jamak.OrderChatModule.Web</moduleType>
   <styles>
     <directory virtualPath="$/Content/css" searchPattern="*.css" searchSubdirectories="true" />
   </styles>-->
