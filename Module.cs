@@ -1,10 +1,14 @@
-﻿using Microsoft.Practices.Unity;
+﻿using Jamak.OrderChatModule.Web.Migrations;
+using Jamak.OrderChatModule.Web.Services;
+using Microsoft.Practices.Unity;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using VirtoCommerce.Platform.Core.Modularity;
+using VirtoCommerce.Platform.Data.Infrastructure;
+using VirtoCommerce.Platform.Data.Infrastructure.Interceptors;
 
 namespace Jamak.OrderChatModule.Web
 {
@@ -19,15 +23,21 @@ namespace Jamak.OrderChatModule.Web
         }
         public override void SetupDatabase()
         {
-            //TODO: Init database
+            using (var db = new OrderChatRepository(_connectionStringName, _container.Resolve<AuditableInterceptor>()))
+            {
+                var initializer = new SetupDatabaseInitializer<OrderChatRepository, Configuration>();
+                initializer.InitializeDatabase(db);
+            }
         }
         public override void Initialize()
         {
-            //TODO: Initialize Repository
+            base.Initialize();
+            _container.RegisterType<IOrderChatRepository>(new InjectionFactory(c => new OrderChatRepository(_connectionStringName, _container.Resolve<AuditableInterceptor>(), new EntityPrimaryKeyGeneratorInterceptor())));
+            _container.RegisterType<IOrderChatService, OrderChatService>();
         }
         public override void PostInitialize()
         {
-            //TODO: PostInitialize service
+            base.PostInitialize();
         }
     }
 }

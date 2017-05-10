@@ -16,5 +16,6 @@ namespace Jamak.OrderChatModule.Web.Services
 
         void SubscribeRoom(string OrderId, string UserId);
         void UnSubscribeRoom(string OrderId, string UserId);
+        dynamic RoomInfo(string OrderId);
     }
 }

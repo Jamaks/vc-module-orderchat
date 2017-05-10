@@ -25,10 +25,15 @@ namespace Jamak.OrderChatModule.Web.Services
                 var chatRoom = repository.ChatRooms.FirstOrDefault(r => r.Id == OrderId);
                 if (chatRoom != null)
                 {
-                    var newMess = new ChatMessage() { Id=OrderId,Text = Message ,CreaterUserId=UserCreaterId,CreatedDate=DateTime.Now, CreatedBy = CreatedBy };
+                    var newMess = new ChatMessage() { Id=Guid.NewGuid().ToString(),Text = Message ,CreaterUserId=UserCreaterId,CreatedDate=DateTime.Now, CreatedBy = CreatedBy };
                     chatRoom.ChatMessages.Add(newMess);
-                    //TODO: add new messages to subscribe users
 
+                    // add new messages to subscribe users
+                    foreach (var subscriber in chatRoom.ChatUserSubscribers)
+                    {
+                        subscriber.ChatUserSubscriberNewMessages.Add(new ChatUserSubscriberNewMessage() { Id=Guid.NewGuid().ToString(),MessageId=newMess.Id});
+                        repository.Attach(subscriber);
+                    }
                     repository.Attach(chatRoom);
 
                     CommitChanges(repository);
@@ -87,13 +92,33 @@ namespace Jamak.OrderChatModule.Web.Services
                 var chatRoom = repository.ChatRooms.FirstOrDefault(r => r.Id == OrderId);
                 if (chatRoom != null)
                 {
-                    //TODO: remove new messages from subscribe users
+                    // remove new messages from subscribe users
+                    var newUserMessages = chatRoom.ChatUserSubscribers.Where(s => s.UserId == UserId);
+                    repository.Remove(newUserMessages);
+                    CommitChanges(repository);
+
                     //TODO: return dynamic { isNew:true, message:{...}}
 
                     return chatRoom.ChatMessages.OrderBy(m => m.CreatedDate).ToList();
                 }
                 throw new NotImplementedException();
             }
+        }
+
+        public dynamic RoomInfo(string OrderId)
+        {
+            using (var repository = RepositoryFactory())
+            {
+                var chatRoom = repository.ChatRooms.FirstOrDefault(r => r.Id == OrderId);
+                if (chatRoom != null)
+                {
+                    dynamic obj= new System.Dynamic.ExpandoObject();
+                    obj.LastMessage = chatRoom.ChatMessages.OrderByDescending(p => p.CreatedDate).FirstOrDefault();
+                    obj.CountMessages = chatRoom.ChatMessages.Count();
+                    return obj;
+                }
+            }
+            throw new NotImplementedException();
         }
 
         public void SubscribeRoom(string OrderId, string UserId)
