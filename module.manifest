@@ -24,9 +24,9 @@
 
   <assemblyFile>Jamak.OrderChatModule.Web.dll</assemblyFile>
   <moduleType>Jamak.OrderChatModule.Web.Module, Jamak.OrderChatModule.Web</moduleType>
- <!-- <styles>
+  <styles>
     <directory virtualPath="$/Content/css" searchPattern="*.css" searchSubdirectories="true" />
-  </styles>-->
+  </styles>
   <scripts>
     <directory virtualPath="$/Scripts" searchPattern="*.js" searchSubdirectories="true" />
   </scripts>

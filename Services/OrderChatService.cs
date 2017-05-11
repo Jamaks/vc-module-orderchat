@@ -84,7 +84,7 @@ namespace Jamak.OrderChatModule.Web.Services
             }
         }
 
-        public List<ChatMessage> GetRoomMessage(string OrderId, string UserId)
+        public dynamic GetRoomMessage(string OrderId, string UserId)
         {
             var pkMap = new PrimaryKeyResolvingMap();
             using (var repository = RepositoryFactory())
@@ -92,14 +92,39 @@ namespace Jamak.OrderChatModule.Web.Services
                 var chatRoom = repository.ChatRooms.FirstOrDefault(r => r.Id == OrderId);
                 if (chatRoom != null)
                 {
+
+                    var newUserMessages = repository.ChatUserSubscriberNewMessages.Where(s => s.ChatUserSubscriber.UserId == UserId);
+                    var newUserMessagesIds = newUserMessages.Select(m => m.MessageId);
+                    var messages = repository.ChatMessages.Where(o => o.ChatRoom.Id == OrderId).OrderBy(m => m.CreatedDate);
+                    dynamic obj = new System.Dynamic.ExpandoObject();
+                    obj.Count = messages.Count();
+                    var messageList = new List<dynamic>() { };
+                    foreach (var item in messages)
+                    {
+                        dynamic itemObj = new System.Dynamic.ExpandoObject();
+                        if (newUserMessagesIds.Contains(item.Id))
+                        {
+                            itemObj.isNew = true;
+                        }
+                        else
+                        {
+                            itemObj.isNew = false;
+                        }
+                        itemObj.id = item.Id;
+                        itemObj.createdBy = item.CreatedBy;
+                        itemObj.createdDate = item.CreatedDate;
+                        itemObj.createrUserId = item.CreaterUserId;
+                        itemObj.text = item.Text;
+
+                        messageList.Add(itemObj);
+
+                    }
+                    obj.messages= messageList;
                     // remove new messages from subscribe users
-                    //var newUserMessages = chatRoom.ChatUserSubscribers.Where(s => s.UserId == UserId);
+
                     //repository.Remove(newUserMessages);
                     //CommitChanges(repository);
-
-                    //TODO: return dynamic { isNew:true, message:{...}}
-
-                    return repository.ChatMessages.Where(o=>o.ChatRoom.Id== OrderId).OrderBy(m => m.CreatedDate).ToList();
+                    return obj;
                 }
                 return null;
             }

@@ -12,7 +12,7 @@ namespace Jamak.OrderChatModule.Web.Services
         ChatRoom CreateRoom(string OrderId);
         ChatMessage AddMessage(string OrderId, string Message, string UserCreaterId, string CreatedBy);
         void DeleteMessage(string OrderId, string MessageId);
-        List<ChatMessage> GetRoomMessage(string OrderId,string UserId);
+        dynamic GetRoomMessage(string OrderId,string UserId);
 
         void SubscribeRoom(string OrderId, string UserId);
         void UnSubscribeRoom(string OrderId, string UserId);

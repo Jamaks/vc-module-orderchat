@@ -13,6 +13,7 @@ namespace Jamak.OrderChatModule.Web
         IQueryable<ChatMessage> ChatMessages { get; }
         IQueryable<ChatRoom> ChatRooms { get; }
         IQueryable<ChatUserSubscriber> ChatUserSubscribers { get; }
+        IQueryable<ChatUserSubscriberNewMessage> ChatUserSubscriberNewMessages { get; }
 
     }
 }
