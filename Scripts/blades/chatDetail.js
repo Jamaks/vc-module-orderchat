@@ -8,14 +8,18 @@ OrderChatModule.controller('Jamak.OrderChatModule.ChatDetailController',
         blade.chatMessages = [];
         blade.addMessages = addMessages;
         blade.getMessages = getMessages;
+        blade.newMess = "";
         getMessages(blade.currentEntity.customerOrder.customerId)
 
+
+        blade.sendMessage = function (mess) {
+            addMessages({ 'RoomId': blade.currentEntity.customerOrder.customerId, 'Text': mess })
+        }
         function getMessages(roomId) {
             blade.isLoading = true;
             $http.post(baseUri + "room/messages/" + roomId).then(function (resp) {
                 blade.isLoading = false;
                 blade.chatMessages = resp.data;
-                addMessages({ 'RoomId': roomId, 'Text': 'test string' })
             });
         }
         /** 
@@ -25,8 +29,8 @@ OrderChatModule.controller('Jamak.OrderChatModule.ChatDetailController',
             blade.isLoading = true;
             $http.post(baseUri + "room/message/add", model).then(function (resp) {
                 blade.isLoading = false;
-                blade.chatMessages.push(resp.data);
-
+                blade.chatMessages.messages.push(resp.data);
+                blade.newMess = "";
             });
         }
 

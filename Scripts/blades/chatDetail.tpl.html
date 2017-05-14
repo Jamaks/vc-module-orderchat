@@ -7,24 +7,24 @@
 
                 <div class='chat-message padding'>
 
-                    <div class='chat-message chat-message-recipient'>
+                    <div ng-repeat="message in blade.chatMessages.messages" class='chat-message'  ng-class="{'chat-message-recipient': message.createdBy !=  'admin','chat-message-sender': message.createdBy ==  'admin'}" >
 
 
                         <div class='chat-message-wrapper'>
                             <div class='chat-message-content'>
-                                <p>Sushi tonight?</p>
+                                <p>{{message.text}}</p>
                             </div>
 
                             <div class='chat-details'>
-                                <span class='chat-message-localization font-size-small'>Time</span>
-                                <span class='chat-message-read-status font-size-small'>- Date</span>
+                                <span class='chat-message-localization font-size-small'>{{message.createdDate | date:'yyyy-MM-dd HH:mm:ss '}}</span>
+                                <span class='chat-message-read-status font-size-small'>- {{message.createdBy}}</span>
                             </div>
 
                         </div>
                     </div>
+                    
 
-
-                    <div class='chat-message chat-message-sender'>
+                    <!--<div class='chat-message chat-message-sender'>
 
                         <div class='chat-message-wrapper'>
                             <div class='chat-message-content'>
@@ -73,11 +73,18 @@
                             </div>
 
                         </div>
-                    </div>
+                    </div>-->
 
 
                 </div>
-
+                <div class="chat-input" style="padding-bottom: 5px;">
+                    <div class="input-group">
+                        <input type="text" class="form-control" ng-model="blade.newMess" style="padding: 5px; width: 75%;">
+                        <span class="input-group-btn">
+                            <button class="btn btn-default" type="button" ng-click="blade.sendMessage(blade.newMess)">Send</button>
+                        </span>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
